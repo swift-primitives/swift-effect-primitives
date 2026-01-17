@@ -1,4 +1,5 @@
 import Testing
+import Dependency_Primitives
 @testable import Effect_Primitives
 
 // MARK: - Test Fixtures

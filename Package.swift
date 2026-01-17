@@ -19,11 +19,13 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../swift-test-primitives"),
+        .package(path: "../swift-dependency-primitives"),
     ],
     targets: [
         .target(
             name: "Effect Primitives",
             dependencies: [
+                .product(name: "Dependency Primitives", package: "swift-dependency-primitives"),
             ]
         ),
         .testTarget(

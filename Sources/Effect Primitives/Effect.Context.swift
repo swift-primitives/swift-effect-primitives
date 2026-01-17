@@ -1,7 +1,12 @@
+public import Dependency_Primitives
+
 extension Effect {
     /// Task-local context for effect handler registration.
     ///
     /// `Effect.Context` provides scoped handler registration via Task-local storage.
+    /// This is a thin wrapper around ``Dependency/Scope`` that provides
+    /// effect-specific terminology.
+    ///
     /// Use ``with(_:operation:)-5q3q7`` to register handlers for a scope:
     ///
     /// ```swift
@@ -39,18 +44,38 @@ extension Effect {
     /// let console = Effect.Context.current[ConsoleHandler.self]
     /// ```
     public struct Context: Sendable {
-        /// Task-local storage for the current context.
-        @TaskLocal
-        private static var _current: Context = Context(handlers: Handlers())
-
-        /// The registered handlers in this context.
-        public var handlers: Handlers
-
-        internal init(handlers: Handlers) {
-            self.handlers = handlers
-        }
+        private init() {}
     }
 }
+
+// MARK: - Type Aliases
+
+extension Effect.Context {
+    /// Protocol for context keys.
+    ///
+    /// Use `Effect.Context.Key` or `EffectContextKey` to refer to this type.
+    /// This is an alias for ``Dependency/Key``.
+    public typealias Key = Dependency.Key
+
+    /// Storage for registered handlers.
+    ///
+    /// This is an alias for ``Dependency/Values``.
+    public typealias Handlers = Dependency.Values
+}
+
+/// A key for registering handlers in the effect context.
+///
+/// This is an alias for ``Dependency/Key``. Conform your handler types
+/// to this protocol to enable registration in `Effect.Context`:
+///
+/// ```swift
+/// struct ConsoleHandler: EffectContextKey {
+///     typealias Value = ConsoleHandlerImpl
+///     static var liveValue: Value { .live }
+///     static var testValue: Value { .mock }
+/// }
+/// ```
+public typealias EffectContextKey = Dependency.Key
 
 // MARK: - Current Access
 
@@ -60,7 +85,7 @@ extension Effect.Context {
     /// Returns the handlers from the innermost ``with(_:operation:)-5q3q7`` scope,
     /// or the default handlers if not in a scope.
     public static var current: Handlers {
-        _current.handlers
+        Dependency.Scope.current
     }
 }
 
@@ -82,16 +107,7 @@ extension Effect.Context {
         _ modify: (inout Handlers) -> Void,
         operation: () throws(E) -> T
     ) throws(E) -> T {
-        var context = _current
-        modify(&context.handlers)
-        let result: Result<T, E> = $_current.withValue(context) {
-            do throws(E) {
-                return .success(try operation())
-            } catch {
-                return .failure(error)
-            }
-        }
-        return try result.get()
+        try Dependency.Scope.with(modify, operation: operation)
     }
 
     /// Executes a closure with modified handlers (non-throwing).
@@ -104,9 +120,7 @@ extension Effect.Context {
         _ modify: (inout Handlers) -> Void,
         operation: () -> T
     ) -> T {
-        var context = _current
-        modify(&context.handlers)
-        return $_current.withValue(context, operation: operation)
+        Dependency.Scope.with(modify, operation: operation)
     }
 }
 
@@ -128,16 +142,7 @@ extension Effect.Context {
         _ modify: (inout Handlers) -> Void,
         operation: () async throws(E) -> T
     ) async throws(E) -> T {
-        var context = _current
-        modify(&context.handlers)
-        let result: Result<T, E> = await $_current.withValue(context) {
-            do throws(E) {
-                return .success(try await operation())
-            } catch {
-                return .failure(error)
-            }
-        }
-        return try result.get()
+        try await Dependency.Scope.with(modify, operation: operation)
     }
 
     /// Executes an async closure with modified handlers (non-throwing).
@@ -150,8 +155,6 @@ extension Effect.Context {
         _ modify: (inout Handlers) -> Void,
         operation: () async -> T
     ) async -> T {
-        var context = _current
-        modify(&context.handlers)
-        return await $_current.withValue(context, operation: operation)
+        await Dependency.Scope.with(modify, operation: operation)
     }
 }
