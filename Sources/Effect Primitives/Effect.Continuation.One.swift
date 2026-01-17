@@ -67,24 +67,30 @@ extension Effect.Continuation {
             await _resume(result)
         }
 
-        /// Extracts the resume closure, consuming this continuation.
+        /// Wraps this continuation with an intercepting callback.
         ///
-        /// Use this when you need to wrap a continuation in another continuation.
-        /// The extracted closure can be captured in a new continuation's closure.
+        /// The callback is invoked with the result before the original resume.
+        /// Returns a new one-shot continuation that must be consumed exactly once.
+        ///
+        /// Use this to observe or record the result without breaking one-shot semantics.
         ///
         /// ```swift
         /// func handle(continuation: consuming One<Int, Never>) async {
-        ///     let originalResume = continuation.extract()
-        ///     let wrapper = Effect.Continuation.one { result in
-        ///         // intercept...
-        ///         await originalResume(result)
+        ///     let wrapped = continuation.onResume { result in
+        ///         print("Intercepted: \(result)")
         ///     }
-        ///     await inner.handle(wrapper)
+        ///     await inner.handle(continuation: wrapped)
         /// }
         /// ```
         @inlinable
-        public consuming func extract() -> @Sendable (sending Result<Value, Failure>) async -> Void {
-            _resume
+        public consuming func onResume(
+            _ callback: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
+        ) -> One<Value, Failure> {
+            let original = _resume
+            return One { result in
+                await callback(result)
+                await original(result)
+            }
         }
     }
 }
