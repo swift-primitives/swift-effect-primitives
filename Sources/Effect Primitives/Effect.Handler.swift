@@ -34,9 +34,12 @@
 ///
 /// Handlers are parameterized by the effect type they handle,
 /// ensuring type-safe interpretation of effect arguments and results.
-public protocol EffectHandler: Sendable {
+///
+/// - Note: This protocol is hoisted to module level due to Swift limitations.
+///   Use `Effect.Handler.Protocol` to refer to this type.
+public protocol __EffectHandler: Sendable {
     /// The effect type this handler interprets.
-    associatedtype Handled: EffectProtocol
+    associatedtype Handled: __EffectProtocol
 
     /// Handle an effect, resuming the continuation.
     ///
@@ -55,6 +58,6 @@ extension Effect {
         /// Protocol for types that can handle (interpret) effects.
         ///
         /// Use `Effect.Handler.Protocol` to refer to this type.
-        public typealias `Protocol` = EffectHandler
+        public typealias `Protocol` = __EffectHandler
     }
 }

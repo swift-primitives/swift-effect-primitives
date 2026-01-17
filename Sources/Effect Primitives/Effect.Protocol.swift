@@ -11,13 +11,13 @@
 /// Conforming types declare their argument and result types:
 ///
 /// ```swift
-/// struct ReadLine: EffectProtocol {
+/// struct ReadLine: Effect.Protocol {
 ///     typealias Arguments = Void
 ///     typealias Value = String
 ///     typealias Failure = Never
 /// }
 ///
-/// struct Fetch: EffectProtocol {
+/// struct Fetch: Effect.Protocol {
 ///     typealias Arguments = URL
 ///     typealias Value = Data
 ///     typealias Failure = NetworkError
@@ -31,7 +31,10 @@
 ///
 /// Effects carry their arguments as instance data rather than method
 /// parameters. This enables type-level dispatch and cleaner composition.
-public protocol EffectProtocol: Sendable {
+///
+/// - Note: This protocol is hoisted to module level due to Swift limitations.
+///   Use `Effect.Protocol` to refer to this type.
+public protocol __EffectProtocol: Sendable {
     /// The arguments provided when performing this effect.
     associatedtype Arguments: Sendable = Void
 
@@ -45,7 +48,7 @@ public protocol EffectProtocol: Sendable {
     var arguments: Arguments { get }
 }
 
-extension EffectProtocol where Arguments == Void {
+extension __EffectProtocol where Arguments == Void {
     /// Default implementation providing `()` for effects with no arguments.
     public var arguments: Void { () }
 }

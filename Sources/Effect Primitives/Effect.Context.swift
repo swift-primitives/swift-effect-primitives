@@ -53,8 +53,16 @@ extension Effect {
 extension Effect.Context {
     /// Protocol for context keys.
     ///
-    /// Use `Effect.Context.Key` or `EffectContextKey` to refer to this type.
+    /// Use `Effect.Context.Key` to refer to this type.
     /// This is an alias for ``Dependency/Key``.
+    ///
+    /// ```swift
+    /// struct ConsoleHandler: Effect.Context.Key {
+    ///     typealias Value = ConsoleHandlerImpl
+    ///     static var liveValue: Value { .live }
+    ///     static var testValue: Value { .mock }
+    /// }
+    /// ```
     public typealias Key = Dependency.Key
 
     /// Storage for registered handlers.
@@ -62,20 +70,6 @@ extension Effect.Context {
     /// This is an alias for ``Dependency/Values``.
     public typealias Handlers = Dependency.Values
 }
-
-/// A key for registering handlers in the effect context.
-///
-/// This is an alias for ``Dependency/Key``. Conform your handler types
-/// to this protocol to enable registration in `Effect.Context`:
-///
-/// ```swift
-/// struct ConsoleHandler: EffectContextKey {
-///     typealias Value = ConsoleHandlerImpl
-///     static var liveValue: Value { .live }
-///     static var testValue: Value { .mock }
-/// }
-/// ```
-public typealias EffectContextKey = Dependency.Key
 
 // MARK: - Current Access
 

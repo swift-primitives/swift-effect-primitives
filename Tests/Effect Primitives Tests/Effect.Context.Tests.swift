@@ -4,19 +4,19 @@ import Dependency_Primitives
 
 // MARK: - Test Fixtures
 
-private struct CounterKey: EffectContextKey {
+private struct CounterKey: Effect.Context.Key {
     typealias Value = Int
     static var liveValue: Int { 0 }
     static var testValue: Int { 999 }
 }
 
-private struct StringKey: EffectContextKey {
+private struct StringKey: Effect.Context.Key {
     typealias Value = String
     static var liveValue: String { "live" }
     static var testValue: String { "test" }
 }
 
-private struct NoTestValueKey: EffectContextKey {
+private struct NoTestValueKey: Effect.Context.Key {
     typealias Value = String
     static var liveValue: String { "default-live" }
     // testValue defaults to liveValue

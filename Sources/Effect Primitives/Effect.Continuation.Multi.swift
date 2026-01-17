@@ -31,7 +31,7 @@ extension Effect.Continuation {
     /// - **Probabilistic**: Sample from distributions, fork execution
     /// - **Generators**: Yield multiple values from a single call
     /// - **Coroutines**: Fork and join concurrent branches
-    public struct Multi<Value: Sendable, Failure: Error>: EffectContinuation, Sendable {
+    public struct Multi<Value: Sendable, Failure: Error>: __EffectContinuation, Sendable {
         @usableFromInline
         internal let _resume: @Sendable (sending Result<Value, Failure>) async -> Void
 

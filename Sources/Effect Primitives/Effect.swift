@@ -14,7 +14,7 @@
 ///
 /// ```swift
 /// // Define an effect
-/// struct ReadLine: EffectProtocol {
+/// struct ReadLine: Effect.Protocol {
 ///     typealias Value = String
 ///     typealias Failure = Never
 /// }
@@ -28,9 +28,8 @@
 /// }
 /// ```
 public enum Effect {
-    /// Protocol marker for effect types.
+    /// Protocol for types representing effect operations.
     ///
-    /// Use `EffectProtocol` directly since `Effect.Protocol` conflicts
-    /// with Swift's reserved `Protocol` metatype.
-    public typealias `Protocol` = EffectProtocol
+    /// Use `Effect.Protocol` to refer to this type.
+    public typealias `Protocol` = __EffectProtocol
 }

@@ -3,12 +3,12 @@ import Testing
 
 // MARK: - Test Effects
 
-private struct SimpleEffect: EffectProtocol {
+private struct SimpleEffect: Effect.`Protocol` {
     typealias Value = String
     typealias Failure = Never
 }
 
-private struct EffectWithArguments: EffectProtocol {
+private struct EffectWithArguments: Effect.`Protocol` {
     typealias Arguments = (x: Int, y: Int)
     typealias Value = Int
     typealias Failure = Never
@@ -19,7 +19,7 @@ private struct EffectWithArguments: EffectProtocol {
     var arguments: (x: Int, y: Int) { (x, y) }
 }
 
-private struct FallibleEffect: EffectProtocol {
+private struct FallibleEffect: Effect.`Protocol` {
     typealias Value = String
 
     struct Failure: Error, Equatable {
@@ -29,7 +29,7 @@ private struct FallibleEffect: EffectProtocol {
 
 // MARK: - Tests
 
-@Suite("EffectProtocol")
+@Suite("Effect.Protocol")
 struct EffectProtocolTests {
 
     @Test("simple effect with void arguments")

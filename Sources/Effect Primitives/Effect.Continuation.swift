@@ -21,7 +21,10 @@
 ///
 /// - ``Effect.Continuation.One``: One-shot continuation (move-only, enforced)
 /// - ``Effect.Continuation.Multi``: Multi-shot continuation (copyable)
-public protocol EffectContinuation<Value, Failure>: ~Copyable, Sendable {
+///
+/// - Note: This protocol is hoisted to module level due to Swift limitations.
+///   Use `Effect.Continuation.Protocol` to refer to this type.
+public protocol __EffectContinuation<Value, Failure>: ~Copyable, Sendable {
     /// The success value type this continuation accepts.
     associatedtype Value: Sendable
 
@@ -50,6 +53,6 @@ extension Effect {
         /// Protocol for continuation types.
         ///
         /// Use `Effect.Continuation.Protocol` to refer to this type.
-        public typealias `Protocol` = EffectContinuation
+        public typealias `Protocol` = __EffectContinuation
     }
 }

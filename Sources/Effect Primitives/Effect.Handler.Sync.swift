@@ -30,5 +30,5 @@ extension Effect.Handler {
     ///     }
     /// }
     /// ```
-    public typealias Sync = EffectHandler
+    public typealias Sync = __EffectHandler
 }

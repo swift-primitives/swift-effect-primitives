@@ -18,7 +18,7 @@ extension Effect {
     ///
     /// ```swift
     /// extension Effect {
-    ///     static func perform<E: EffectProtocol>(
+    ///     static func perform<E: Effect.Protocol>(
     ///         _ effect: E
     ///     ) async throws(E.Failure) -> E.Value
     /// }
@@ -36,7 +36,7 @@ extension Effect {
     ///
     /// ```swift
     /// // Define an effect
-    /// struct ReadLine: EffectProtocol {
+    /// struct ReadLine: Effect.Protocol {
     ///     typealias Value = String
     ///     typealias Failure = Never
     /// }
