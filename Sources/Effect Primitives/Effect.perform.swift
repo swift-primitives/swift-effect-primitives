@@ -57,7 +57,7 @@ extension Effect.Continuation {
     ///
     /// - Parameter resume: The closure to call when resuming.
     /// - Returns: A one-shot continuation.
-    public static func one<Value: Sendable, Failure: Error>(
+    public static func one<Value, Failure: Error>(
         _ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
     ) -> One<Value, Failure> {
         One(resume)
@@ -70,7 +70,7 @@ extension Effect.Continuation {
     ///
     /// - Parameter resume: The closure to call when resuming.
     /// - Returns: A multi-shot continuation.
-    public static func multi<Value: Sendable, Failure: Error>(
+    public static func multi<Value, Failure: Error>(
         _ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
     ) -> Multi<Value, Failure> {
         Multi(resume)

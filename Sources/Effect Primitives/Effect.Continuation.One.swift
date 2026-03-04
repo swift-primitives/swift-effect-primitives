@@ -25,7 +25,7 @@ extension Effect.Continuation {
     /// - Cannot be resumed twice (would require copying)
     /// - Cannot be accidentally forgotten (ownership tracking)
     /// - Cannot be stored without consuming
-    public struct One<Value: Sendable, Failure: Error>: ~Copyable, Sendable {
+    public struct One<Value, Failure: Error>: ~Copyable, Sendable {
         @usableFromInline
         internal let _resume: @Sendable (sending Result<Value, Failure>) async -> Void
 
@@ -67,30 +67,36 @@ extension Effect.Continuation {
             await _resume(result)
         }
 
-        /// Wraps this continuation with an intercepting callback.
-        ///
-        /// The callback is invoked with the result before the original resume.
-        /// Returns a new one-shot continuation that must be consumed exactly once.
-        ///
-        /// Use this to observe or record the result without breaking one-shot semantics.
-        ///
-        /// ```swift
-        /// func handle(continuation: consuming One<Int, Never>) async {
-        ///     let wrapped = continuation.onResume { result in
-        ///         print("Intercepted: \(result)")
-        ///     }
-        ///     await inner.handle(continuation: wrapped)
-        /// }
-        /// ```
-        @inlinable
-        public consuming func onResume(
-            _ callback: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
-        ) -> One<Value, Failure> {
-            let original = _resume
-            return One { result in
-                await callback(result)
-                await original(result)
-            }
+    }
+}
+
+extension Effect.Continuation.One where Value: Sendable {
+    /// Wraps this continuation with an intercepting callback.
+    ///
+    /// The callback is invoked with the result before the original resume.
+    /// Returns a new one-shot continuation that must be consumed exactly once.
+    ///
+    /// Use this to observe or record the result without breaking one-shot semantics.
+    ///
+    /// - Note: Requires `Value: Sendable` because the result is used in two
+    ///   `sending` contexts (callback and original resume closure).
+    ///
+    /// ```swift
+    /// func handle(continuation: consuming One<Int, Never>) async {
+    ///     let wrapped = continuation.onResume { result in
+    ///         print("Intercepted: \(result)")
+    ///     }
+    ///     await inner.handle(continuation: wrapped)
+    /// }
+    /// ```
+    @inlinable
+    public consuming func onResume(
+        _ callback: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
+    ) -> Effect.Continuation.One<Value, Failure> {
+        let original = _resume
+        return Effect.Continuation.One { result in
+            await callback(result)
+            await original(result)
         }
     }
 }

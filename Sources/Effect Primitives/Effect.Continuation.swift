@@ -26,7 +26,7 @@
 ///   Use `Effect.Continuation.Protocol` to refer to this type.
 public protocol __EffectContinuation<Value, Failure>: ~Copyable, Sendable {
     /// The success value type this continuation accepts.
-    associatedtype Value: Sendable
+    associatedtype Value
 
     /// The error type this continuation accepts.
     associatedtype Failure: Error
