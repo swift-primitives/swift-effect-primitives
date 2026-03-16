@@ -1,4 +1,11 @@
 # Algebraic Effects in Swift: Design Patterns, Language Limitations, and Practical Implementation
+<!--
+---
+version: 1.0.0
+last_updated: 2026-01-18
+status: IMPLEMENTED
+---
+-->
 
 ## Abstract
 
