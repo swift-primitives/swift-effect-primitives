@@ -32,23 +32,31 @@
 /// Effects carry their arguments as instance data rather than method
 /// parameters. This enables type-level dispatch and cleaner composition.
 ///
+/// ## Noncopyable Support
+///
+/// `Arguments` and `Value` admit `~Copyable` types: an effect may carry
+/// linear resources (owning file descriptors, unique tokens) as arguments
+/// or deliver them as results. `arguments` is exposed through a
+/// `borrowing get` so a `~Copyable` Arguments value can be observed
+/// without being consumed.
+///
 /// - Note: This protocol is hoisted to module level due to Swift limitations.
 ///   Use `Effect.Protocol` to refer to this type.
-public protocol __EffectProtocol: Sendable {
+public protocol __EffectProtocol: ~Copyable, Sendable {
     /// The arguments provided when performing this effect.
-    associatedtype Arguments: Sendable = Void
+    associatedtype Arguments: ~Copyable & Sendable = Void
 
     /// The success value type returned when the effect is handled.
-    associatedtype Value: Sendable
+    associatedtype Value: ~Copyable & Sendable
 
     /// The error type that handling may produce.
     associatedtype Failure: Error = Never
 
     /// The arguments for this effect instance.
-    var arguments: Arguments { get }
+    var arguments: Arguments { borrowing get }
 }
 
-extension __EffectProtocol where Arguments == Void {
+extension __EffectProtocol where Self: ~Copyable, Arguments == Void {
     /// Default implementation providing `()` for effects with no arguments.
     public var arguments: Void { () }
 }

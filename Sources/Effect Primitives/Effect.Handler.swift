@@ -35,11 +35,19 @@
 /// Handlers are parameterized by the effect type they handle,
 /// ensuring type-safe interpretation of effect arguments and results.
 ///
+/// ## Noncopyable Support
+///
+/// The handler itself admits `~Copyable` conformers: a handler may own
+/// linear state (a descriptor, a connection, a pool token). The handled
+/// effect also admits `~Copyable` types — the `handle` requirement takes
+/// the effect by `borrowing`, allowing the handler to observe a linear
+/// effect instance without consuming it.
+///
 /// - Note: This protocol is hoisted to module level due to Swift limitations.
 ///   Use `Effect.Handler.Protocol` to refer to this type.
-public protocol __EffectHandler: Sendable {
+public protocol __EffectHandler: ~Copyable, Sendable {
     /// The effect type this handler interprets.
-    associatedtype Handled: __EffectProtocol
+    associatedtype Handled: ~Copyable & __EffectProtocol
 
     /// Handle an effect, resuming the continuation.
     ///
@@ -47,7 +55,7 @@ public protocol __EffectHandler: Sendable {
     ///   - effect: The effect being performed
     ///   - continuation: The continuation to resume (consumed)
     func handle(
-        _ effect: Handled,
+        _ effect: borrowing Handled,
         continuation: consuming Effect.Continuation.One<Handled.Value, Handled.Failure>
     ) async
 }

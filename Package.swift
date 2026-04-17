@@ -18,13 +18,17 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../swift-dependency-primitives")
+        .package(path: "../swift-dependency-primitives"),
+        .package(path: "../swift-equation-primitives"),
+        .package(path: "../swift-hash-primitives"),
     ],
     targets: [
         .target(
             name: "Effect Primitives",
             dependencies: [
-                .product(name: "Dependency Primitives", package: "swift-dependency-primitives")
+                .product(name: "Dependency Primitives", package: "swift-dependency-primitives"),
+                .product(name: "Equation Primitives", package: "swift-equation-primitives"),
+                .product(name: "Hash Primitives", package: "swift-hash-primitives"),
             ]
         ),
         .testTarget(

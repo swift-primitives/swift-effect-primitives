@@ -50,17 +50,37 @@ extension Effect {
 // MARK: - Continuation Factory
 
 extension Effect.Continuation {
-    /// Creates a one-shot continuation from a resume closure.
+    /// Creates a one-shot continuation from a `Result`-delivering closure.
     ///
-    /// This is the primitive for building effect handlers. The runtime
-    /// layer uses this to wrap Swift's checked continuations.
+    /// Available when `Value` is `Copyable` because stdlib's
+    /// `Result<Value, Failure>` requires a copyable value.
     ///
-    /// - Parameter resume: The closure to call when resuming.
+    /// - Parameter resume: The closure invoked when the handler resumes.
     /// - Returns: A one-shot continuation.
     public static func one<Value, Failure: Error>(
         _ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
     ) -> One<Value, Failure> {
-        One(resume)
+        One(
+            onValue: { value in await resume(.success(value)) },
+            onError: { error in await resume(.failure(error)) }
+        )
+    }
+
+    /// Creates a one-shot continuation from explicit value and error callbacks.
+    ///
+    /// Handlers invoke exactly one of the two callbacks via
+    /// `resume(returning:)` or `resume(throwing:)`. This form supports
+    /// `~Copyable` `Value` types where stdlib's `Result` cannot be used.
+    ///
+    /// - Parameters:
+    ///   - onValue: Invoked when the handler resumes with a value.
+    ///   - onError: Invoked when the handler resumes with an error.
+    /// - Returns: A one-shot continuation.
+    public static func one<Value: ~Copyable & Sendable, Failure: Error>(
+        onValue: @escaping @Sendable (consuming sending Value) async -> Void,
+        onError: @escaping @Sendable (Failure) async -> Void
+    ) -> One<Value, Failure> {
+        One(onValue: onValue, onError: onError)
     }
 
     /// Creates a multi-shot continuation from a resume closure.
