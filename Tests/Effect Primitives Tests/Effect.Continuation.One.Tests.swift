@@ -4,8 +4,8 @@ import Testing
 @Suite("Effect.Continuation.One")
 struct OneContinuationTests {
 
-    @Test("resume with value completes successfully")
-    func resumeWithValue() async {
+    @Test
+    func `resume with value completes successfully`() async {
         nonisolated(unsafe) var resumed = false
         nonisolated(unsafe) var receivedValue: String?
 
@@ -22,8 +22,8 @@ struct OneContinuationTests {
         #expect(receivedValue == "hello")
     }
 
-    @Test("resume with result success")
-    func resumeWithResultSuccess() async {
+    @Test
+    func `resume with result success`() async {
         nonisolated(unsafe) var receivedResult: Result<Int, Never>?
 
         let continuation = Effect.Continuation.one { (result: Result<Int, Never>) async in
@@ -35,8 +35,8 @@ struct OneContinuationTests {
         #expect(receivedResult == .success(42))
     }
 
-    @Test("resume with void convenience")
-    func resumeWithVoid() async {
+    @Test
+    func `resume with void convenience`() async {
         nonisolated(unsafe) var resumed = false
 
         let continuation: Effect.Continuation.One<Void, Never> = Effect.Continuation.one { _ async in
@@ -48,8 +48,8 @@ struct OneContinuationTests {
         #expect(resumed)
     }
 
-    @Test("resume with error")
-    func resumeWithError() async {
+    @Test
+    func `resume with error`() async {
         struct TestError: Error, Equatable {
             let message: String
         }

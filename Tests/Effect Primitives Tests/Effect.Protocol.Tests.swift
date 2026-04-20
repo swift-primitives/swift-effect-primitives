@@ -32,8 +32,8 @@ private struct FallibleEffect: Effect.`Protocol` {
 @Suite("Effect.Protocol")
 struct EffectProtocolTests {
 
-    @Test("simple effect with void arguments")
-    func simpleEffectVoidArguments() {
+    @Test
+    func `simple effect with void arguments`() {
         let effect = SimpleEffect()
 
         // arguments should be () for Void
@@ -41,16 +41,16 @@ struct EffectProtocolTests {
         _ = args // suppress unused warning
     }
 
-    @Test("effect with custom arguments")
-    func effectWithCustomArguments() {
+    @Test
+    func `effect with custom arguments`() {
         let effect = EffectWithArguments(x: 10, y: 20)
 
         #expect(effect.arguments.x == 10)
         #expect(effect.arguments.y == 20)
     }
 
-    @Test("effect with typed failure")
-    func effectWithTypedFailure() {
+    @Test
+    func `effect with typed failure`() {
         // This test verifies the type system works correctly
         // FallibleEffect has a custom Failure type
         let _: FallibleEffect.Failure.Type = FallibleEffect.Failure.self
@@ -58,8 +58,8 @@ struct EffectProtocolTests {
         #expect(error.reason == "test")
     }
 
-    @Test("effect is Sendable")
-    func effectIsSendable() {
+    @Test
+    func `effect is Sendable`() {
         // Compile-time check - effects must be Sendable
         func requiresSendable<T: Sendable>(_: T.Type) {}
         requiresSendable(SimpleEffect.self)

@@ -6,8 +6,8 @@ struct OutcomeTests {
 
     // MARK: - Basic Cases
 
-    @Test("resumed case stores value")
-    func resumedCase() {
+    @Test
+    func `resumed case stores value`() {
         let outcome: Effect.Outcome<String, Never> = .resumed("hello")
 
         #expect(outcome.value == "hello")
@@ -15,8 +15,8 @@ struct OutcomeTests {
         #expect(!outcome.isAborted)
     }
 
-    @Test("threw case stores error")
-    func threwCase() {
+    @Test
+    func `threw case stores error`() {
         struct TestError: Error, Equatable {
             let code: Int
         }
@@ -28,8 +28,8 @@ struct OutcomeTests {
         #expect(!outcome.isAborted)
     }
 
-    @Test("aborted case")
-    func abortedCase() {
+    @Test
+    func `aborted case`() {
         let outcome: Effect.Outcome<String, Never> = .aborted
 
         #expect(outcome.value == nil)
@@ -39,8 +39,8 @@ struct OutcomeTests {
 
     // MARK: - Result Conversion
 
-    @Test("init from Result success")
-    func initFromResultSuccess() {
+    @Test
+    func `init from Result success`() {
         let result: Result<Int, Never> = .success(42)
         let outcome = Effect.Outcome(result)
 
@@ -52,8 +52,8 @@ struct OutcomeTests {
         }
     }
 
-    @Test("init from Result failure")
-    func initFromResultFailure() {
+    @Test
+    func `init from Result failure`() {
         struct E: Error, Equatable {}
 
         let result: Result<Int, E> = .failure(E())
@@ -66,15 +66,15 @@ struct OutcomeTests {
         }
     }
 
-    @Test("result property for resumed")
-    func resultPropertyResumed() {
+    @Test
+    func `result property for resumed`() {
         let outcome: Effect.Outcome<String, Never> = .resumed("test")
 
         #expect(outcome.result == .success("test"))
     }
 
-    @Test("result property for threw")
-    func resultPropertyThrew() {
+    @Test
+    func `result property for threw`() {
         struct E: Error, Equatable {}
 
         let outcome: Effect.Outcome<String, E> = .threw(E())
@@ -82,8 +82,8 @@ struct OutcomeTests {
         #expect(outcome.result == .failure(E()))
     }
 
-    @Test("result property for aborted returns nil")
-    func resultPropertyAborted() {
+    @Test
+    func `result property for aborted returns nil`() {
         let outcome: Effect.Outcome<String, Never> = .aborted
 
         #expect(outcome.result == nil)
@@ -91,8 +91,8 @@ struct OutcomeTests {
 
     // MARK: - Equatable
 
-    @Test("equatable for resumed")
-    func equatableResumed() {
+    @Test
+    func `equatable for resumed`() {
         let a: Effect.Outcome<Int, Never> = .resumed(1)
         let b: Effect.Outcome<Int, Never> = .resumed(1)
         let c: Effect.Outcome<Int, Never> = .resumed(2)
@@ -101,8 +101,8 @@ struct OutcomeTests {
         #expect(a != c)
     }
 
-    @Test("equatable for threw")
-    func equatableThrew() {
+    @Test
+    func `equatable for threw`() {
         struct E: Error, Equatable {
             let code: Int
         }
@@ -115,16 +115,16 @@ struct OutcomeTests {
         #expect(a != c)
     }
 
-    @Test("equatable for aborted")
-    func equatableAborted() {
+    @Test
+    func `equatable for aborted`() {
         let a: Effect.Outcome<Int, Never> = .aborted
         let b: Effect.Outcome<Int, Never> = .aborted
 
         #expect(a == b)
     }
 
-    @Test("different cases not equal")
-    func differentCasesNotEqual() {
+    @Test
+    func `different cases not equal`() {
         struct E: Error, Equatable {}
 
         let resumed: Effect.Outcome<Int, E> = .resumed(1)
@@ -138,8 +138,8 @@ struct OutcomeTests {
 
     // MARK: - Hashable
 
-    @Test("hashable consistency")
-    func hashableConsistency() {
+    @Test
+    func `hashable consistency`() {
         let a: Effect.Outcome<Int, Never> = .resumed(42)
         let b: Effect.Outcome<Int, Never> = .resumed(42)
 

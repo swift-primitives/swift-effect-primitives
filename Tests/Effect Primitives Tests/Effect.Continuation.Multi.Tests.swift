@@ -4,8 +4,8 @@ import Testing
 @Suite("Effect.Continuation.Multi")
 struct MultiContinuationTests {
 
-    @Test("can be resumed multiple times")
-    func multipleResumes() async {
+    @Test
+    func `can be resumed multiple times`() async {
         nonisolated(unsafe) var values: [Int] = []
 
         let continuation = Effect.Continuation.multi { (result: Result<Int, Never>) async in
@@ -21,8 +21,8 @@ struct MultiContinuationTests {
         #expect(values == [1, 2, 3])
     }
 
-    @Test("can be copied and resumed from copies")
-    func copyAndResume() async {
+    @Test
+    func `can be copied and resumed from copies`() async {
         nonisolated(unsafe) var count = 0
 
         let original = Effect.Continuation.multi { (_: Result<Void, Never>) async in
@@ -39,8 +39,8 @@ struct MultiContinuationTests {
         #expect(count == 3)
     }
 
-    @Test("resume with result success")
-    func resumeWithResultSuccess() async {
+    @Test
+    func `resume with result success`() async {
         nonisolated(unsafe) var results: [Result<String, Never>] = []
 
         let continuation = Effect.Continuation.multi { (result: Result<String, Never>) async in
@@ -53,8 +53,8 @@ struct MultiContinuationTests {
         #expect(results.count == 2)
     }
 
-    @Test("resume with void convenience")
-    func resumeWithVoid() async {
+    @Test
+    func `resume with void convenience`() async {
         nonisolated(unsafe) var count = 0
 
         let continuation: Effect.Continuation.Multi<Void, Never> = Effect.Continuation.multi { _ async in
@@ -67,8 +67,8 @@ struct MultiContinuationTests {
         #expect(count == 2)
     }
 
-    @Test("resume with errors")
-    func resumeWithErrors() async {
+    @Test
+    func `resume with errors`() async {
         struct TestError: Error, Equatable {
             let code: Int
         }

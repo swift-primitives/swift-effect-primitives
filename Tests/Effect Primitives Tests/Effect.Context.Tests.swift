@@ -27,14 +27,14 @@ private struct NoTestValueKey: Effect.Context.Key {
 @Suite("Effect.Context")
 struct ContextTests {
 
-    @Test("default handler returns liveValue")
-    func defaultLiveValue() {
+    @Test
+    func `default handler returns liveValue`() {
         let value = Effect.Context.current[CounterKey.self]
         #expect(value == 0)
     }
 
-    @Test("with scope sets handler value")
-    func withScopeSetsValue() {
+    @Test
+    func `with scope sets handler value`() {
         let result = Effect.Context.with { handlers in
             handlers[CounterKey.self] = 42
         } operation: {
@@ -44,8 +44,8 @@ struct ContextTests {
         #expect(result == 42)
     }
 
-    @Test("nested scopes override correctly")
-    func nestedScopes() {
+    @Test
+    func `nested scopes override correctly`() {
         var values: [Int] = []
 
         Effect.Context.with { handlers in
@@ -65,8 +65,8 @@ struct ContextTests {
         #expect(values == [1, 2, 1])
     }
 
-    @Test("multiple keys in same scope")
-    func multipleKeys() {
+    @Test
+    func `multiple keys in same scope`() {
         let result = Effect.Context.with { handlers in
             handlers[CounterKey.self] = 100
             handlers[StringKey.self] = "custom"
@@ -81,8 +81,8 @@ struct ContextTests {
         #expect(result.string == "custom")
     }
 
-    @Test("async with scope works")
-    func asyncWithScope() async {
+    @Test
+    func `async with scope works`() async {
         let result = await Effect.Context.with { handlers in
             handlers[CounterKey.self] = 50
         } operation: {
@@ -93,8 +93,8 @@ struct ContextTests {
         #expect(result == 50)
     }
 
-    @Test("throwing operation propagates error")
-    func throwingOperation() {
+    @Test
+    func `throwing operation propagates error`() {
         struct TestError: Error {}
 
         do {
@@ -107,8 +107,8 @@ struct ContextTests {
         }
     }
 
-    @Test("handlers storage subscript get/set")
-    func handlersSubscript() {
+    @Test
+    func `handlers storage subscript get/set`() {
         var handlers = Effect.Context.Handlers()
 
         #expect(handlers[CounterKey.self] == 0) // liveValue
@@ -124,8 +124,8 @@ struct ContextTests {
 @Suite("Effect.Context.Handlers")
 struct HandlersTests {
 
-    @Test("isTestContext returns testValue when true")
-    func testContextReturnsTestValue() {
+    @Test
+    func `isTestContext returns testValue when true`() {
         var handlers = Effect.Context.Handlers()
         handlers.isTestContext = true
 
@@ -133,8 +133,8 @@ struct HandlersTests {
         #expect(handlers[StringKey.self] == "test") // testValue
     }
 
-    @Test("isTestContext false returns liveValue")
-    func liveContextReturnsLiveValue() {
+    @Test
+    func `isTestContext false returns liveValue`() {
         var handlers = Effect.Context.Handlers()
         handlers.isTestContext = false
 
@@ -142,24 +142,24 @@ struct HandlersTests {
         #expect(handlers[StringKey.self] == "live") // liveValue
     }
 
-    @Test("forTesting factory sets isTestContext")
-    func forTestingFactory() {
+    @Test
+    func `forTesting factory sets isTestContext`() {
         let handlers = Effect.Context.Handlers.forTesting()
 
         #expect(handlers[CounterKey.self] == 999)
         #expect(handlers.isTestContext)
     }
 
-    @Test("explicit value overrides test/live defaults")
-    func explicitValueOverridesDefaults() {
+    @Test
+    func `explicit value overrides test/live defaults`() {
         var handlers = Effect.Context.Handlers.forTesting()
         handlers[CounterKey.self] = 42
 
         #expect(handlers[CounterKey.self] == 42) // explicit, not testValue
     }
 
-    @Test("testValue defaults to liveValue when not overridden")
-    func testValueDefaultsToLive() {
+    @Test
+    func `testValue defaults to liveValue when not overridden`() {
         var handlers = Effect.Context.Handlers.forTesting()
 
         // NoTestValueKey has no explicit testValue, so it should use liveValue
