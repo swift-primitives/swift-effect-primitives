@@ -1,4 +1,5 @@
 import Testing
+
 @testable import Effect_Primitives
 
 @Suite("Effect.Outcome")

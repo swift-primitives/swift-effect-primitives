@@ -1,5 +1,6 @@
-import Testing
 import Dependency_Primitives
+import Testing
+
 @testable import Effect_Primitives
 
 // MARK: - Test Fixtures
@@ -98,7 +99,8 @@ struct ContextTests {
         struct TestError: Error {}
 
         do {
-            try Effect.Context.with { _ in } operation: {
+            try Effect.Context.with { _ in
+            } operation: {
                 throw TestError()
             }
             Issue.record("Expected error to be thrown")
@@ -111,7 +113,7 @@ struct ContextTests {
     func `handlers storage subscript get/set`() {
         var handlers = Effect.Context.Handlers()
 
-        #expect(handlers[CounterKey.self] == 0) // liveValue
+        #expect(handlers[CounterKey.self] == 0)  // liveValue
 
         handlers[CounterKey.self] = 123
         #expect(handlers[CounterKey.self] == 123)
@@ -129,8 +131,8 @@ struct HandlersTests {
         var handlers = Effect.Context.Handlers()
         handlers.isTestContext = true
 
-        #expect(handlers[CounterKey.self] == 999) // testValue
-        #expect(handlers[StringKey.self] == "test") // testValue
+        #expect(handlers[CounterKey.self] == 999)  // testValue
+        #expect(handlers[StringKey.self] == "test")  // testValue
     }
 
     @Test
@@ -138,8 +140,8 @@ struct HandlersTests {
         var handlers = Effect.Context.Handlers()
         handlers.isTestContext = false
 
-        #expect(handlers[CounterKey.self] == 0) // liveValue
-        #expect(handlers[StringKey.self] == "live") // liveValue
+        #expect(handlers[CounterKey.self] == 0)  // liveValue
+        #expect(handlers[StringKey.self] == "live")  // liveValue
     }
 
     @Test
@@ -155,7 +157,7 @@ struct HandlersTests {
         var handlers = Effect.Context.Handlers.forTesting()
         handlers[CounterKey.self] = 42
 
-        #expect(handlers[CounterKey.self] == 42) // explicit, not testValue
+        #expect(handlers[CounterKey.self] == 42)  // explicit, not testValue
     }
 
     @Test

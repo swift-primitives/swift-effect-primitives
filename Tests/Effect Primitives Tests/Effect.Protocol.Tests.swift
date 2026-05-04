@@ -1,4 +1,5 @@
 import Testing
+
 @testable import Effect_Primitives
 
 // MARK: - Test Effects
@@ -38,7 +39,7 @@ struct EffectProtocolTests {
 
         // arguments should be () for Void
         let args: Void = effect.arguments
-        _ = args // suppress unused warning
+        _ = args  // suppress unused warning
     }
 
     @Test

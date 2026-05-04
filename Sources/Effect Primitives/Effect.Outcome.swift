@@ -70,20 +70,20 @@ where Value: Equation.`Protocol` & ~Copyable, Failure: Equation.`Protocol` {
         case .resumed(let lv):
             switch rhs {
             case .resumed(let rv): return lv == rv
-            case .threw:           return false
-            case .aborted:         return false
+            case .threw: return false
+            case .aborted: return false
             }
         case .threw(let le):
             switch rhs {
-            case .resumed:         return false
-            case .threw(let re):   return le == re
-            case .aborted:         return false
+            case .resumed: return false
+            case .threw(let re): return le == re
+            case .aborted: return false
             }
         case .aborted:
             switch rhs {
-            case .resumed:         return false
-            case .threw:           return false
-            case .aborted:         return true
+            case .resumed: return false
+            case .threw: return false
+            case .aborted: return true
             }
         }
     }
@@ -161,7 +161,7 @@ extension Effect.Outcome where Value: ~Copyable {
         switch self {
         case .aborted: return true
         case .resumed: return false
-        case .threw:   return false
+        case .threw: return false
         }
     }
 }

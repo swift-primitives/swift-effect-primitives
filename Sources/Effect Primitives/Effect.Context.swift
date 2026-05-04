@@ -133,10 +133,11 @@ extension Effect.Context {
     /// - Returns: The result of the operation.
     /// - Throws: The typed error from the operation.
     nonisolated(nonsending)
-    public static func with<T, E: Error>(
-        _ modify: (inout Handlers) -> Void,
-        operation: nonisolated(nonsending) () async throws(E) -> T
-    ) async throws(E) -> T {
+        public static func with<T, E: Error>(
+            _ modify: (inout Handlers) -> Void,
+            operation: nonisolated(nonsending) () async throws(E) -> T
+        ) async throws(E) -> T
+    {
         try await Dependency.Scope.with(modify, operation: operation)
     }
 
@@ -147,10 +148,11 @@ extension Effect.Context {
     ///   - operation: The async operation to execute with the modified handlers.
     /// - Returns: The result of the operation.
     nonisolated(nonsending)
-    public static func with<T>(
-        _ modify: (inout Handlers) -> Void,
-        operation: nonisolated(nonsending) () async -> T
-    ) async -> T {
+        public static func with<T>(
+            _ modify: (inout Handlers) -> Void,
+            operation: nonisolated(nonsending) () async -> T
+        ) async -> T
+    {
         await Dependency.Scope.with(modify, operation: operation)
     }
 }
