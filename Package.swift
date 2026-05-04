@@ -15,7 +15,11 @@ let package = Package(
         .library(
             name: "Effect Primitives",
             targets: ["Effect Primitives"]
-        )
+        ),
+        .library(
+            name: "Effect Primitives Test Support",
+            targets: ["Effect Primitives Test Support"]
+        ),
     ],
     dependencies: [
         .package(path: "../swift-dependency-primitives"),
@@ -31,10 +35,19 @@ let package = Package(
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
             ]
         ),
+        .target(
+            name: "Effect Primitives Test Support",
+            dependencies: [
+                "Effect Primitives",
+                .product(name: "Hash Primitives Test Support", package: "swift-hash-primitives"),
+            ],
+            path: "Tests/Support"
+        ),
         .testTarget(
             name: "Effect Primitives Tests",
             dependencies: [
                 "Effect Primitives",
+                "Effect Primitives Test Support",
             ]
         ),
     ],
