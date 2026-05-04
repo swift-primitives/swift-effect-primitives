@@ -27,11 +27,6 @@ jobs:
   docs:
     uses: swift-institute/.github/.github/workflows/swift-docs.yml@main
     with:
-      umbrella-module: Effect_Primitives
-      umbrella-display-name: "Effect Primitives"
-      umbrella-bundle-id: "swift-effect-primitives.Effect-Primitives"
-      umbrella-docc-path: "Sources/Effect Primitives/Effect Primitives.docc"
-      exclude-modules: ""
       enable-private-repos: true
     secrets:
       PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
