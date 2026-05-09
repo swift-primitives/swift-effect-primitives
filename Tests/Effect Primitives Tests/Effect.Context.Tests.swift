@@ -96,7 +96,7 @@ struct ContextTests {
 
     @Test
     func `throwing operation propagates error`() {
-        struct TestError: Error {}
+        struct TestError: Swift.Error {}
 
         do {
             try Effect.Context.with { _ in

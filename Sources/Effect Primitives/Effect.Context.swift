@@ -97,7 +97,7 @@ extension Effect.Context {
     ///   - operation: The operation to execute with the modified handlers.
     /// - Returns: The result of the operation.
     /// - Throws: The typed error from the operation.
-    public static func with<T, E: Error>(
+    public static func with<T, E: Swift.Error>(
         _ modify: (inout Handlers) -> Void,
         operation: () throws(E) -> T
     ) throws(E) -> T {
@@ -133,7 +133,7 @@ extension Effect.Context {
     /// - Returns: The result of the operation.
     /// - Throws: The typed error from the operation.
     nonisolated(nonsending)
-        public static func with<T, E: Error>(
+        public static func with<T, E: Swift.Error>(
             _ modify: (inout Handlers) -> Void,
             operation: nonisolated(nonsending) () async throws(E) -> T
         ) async throws(E) -> T

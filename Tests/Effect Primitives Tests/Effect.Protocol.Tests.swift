@@ -23,7 +23,7 @@ private struct EffectWithArguments: Effect.`Protocol` {
 private struct FallibleEffect: Effect.`Protocol` {
     typealias Value = String
 
-    struct Failure: Error, Equatable {
+    struct Failure: Swift.Error, Equatable {
         let reason: String
     }
 }

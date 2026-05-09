@@ -18,7 +18,7 @@ struct OutcomeTests {
 
     @Test
     func `threw case stores error`() {
-        struct TestError: Error, Equatable {
+        struct TestError: Swift.Error, Equatable {
             let code: Int
         }
 
@@ -55,7 +55,7 @@ struct OutcomeTests {
 
     @Test
     func `init from Result failure`() {
-        struct E: Error, Equatable {}
+        struct E: Swift.Error, Equatable {}
 
         let result: Result<Int, E> = .failure(E())
         let outcome = Effect.Outcome(result)
@@ -76,7 +76,7 @@ struct OutcomeTests {
 
     @Test
     func `result property for threw`() {
-        struct E: Error, Equatable {}
+        struct E: Swift.Error, Equatable {}
 
         let outcome: Effect.Outcome<String, E> = .threw(E())
 
@@ -104,7 +104,7 @@ struct OutcomeTests {
 
     @Test
     func `equatable for threw`() {
-        struct E: Error, Equatable {
+        struct E: Swift.Error, Equatable {
             let code: Int
         }
 
@@ -126,7 +126,7 @@ struct OutcomeTests {
 
     @Test
     func `different cases not equal`() {
-        struct E: Error, Equatable {}
+        struct E: Swift.Error, Equatable {}
 
         let resumed: Effect.Outcome<Int, E> = .resumed(1)
         let threw: Effect.Outcome<Int, E> = .threw(E())

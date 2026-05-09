@@ -50,7 +50,7 @@ public protocol __EffectProtocol: ~Copyable, Sendable {
     associatedtype Value: ~Copyable & Sendable
 
     /// The error type that handling may produce.
-    associatedtype Failure: Error = Never
+    associatedtype Failure: Swift.Error = Never
 
     /// The arguments for this effect instance.
     var arguments: Arguments { borrowing get }

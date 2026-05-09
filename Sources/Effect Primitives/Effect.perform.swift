@@ -57,7 +57,7 @@ extension Effect.Continuation {
     ///
     /// - Parameter resume: The closure invoked when the handler resumes.
     /// - Returns: A one-shot continuation.
-    public static func one<Value, Failure: Error>(
+    public static func one<Value, Failure: Swift.Error>(
         _ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
     ) -> One<Value, Failure> {
         One(
@@ -76,7 +76,7 @@ extension Effect.Continuation {
     ///   - onValue: Invoked when the handler resumes with a value.
     ///   - onError: Invoked when the handler resumes with an error.
     /// - Returns: A one-shot continuation.
-    public static func one<Value: ~Copyable & Sendable, Failure: Error>(
+    public static func one<Value: ~Copyable & Sendable, Failure: Swift.Error>(
         onValue: @escaping @Sendable (consuming sending Value) async -> Void,
         onError: @escaping @Sendable (Failure) async -> Void
     ) -> One<Value, Failure> {
@@ -90,7 +90,7 @@ extension Effect.Continuation {
     ///
     /// - Parameter resume: The closure to call when resuming.
     /// - Returns: A multi-shot continuation.
-    public static func multi<Value, Failure: Error>(
+    public static func multi<Value, Failure: Swift.Error>(
         _ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void
     ) -> Multi<Value, Failure> {
         Multi(resume)

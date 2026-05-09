@@ -51,7 +51,7 @@ struct OneContinuationTests {
 
     @Test
     func `resume with error`() async {
-        struct TestError: Error, Equatable {
+        struct TestError: Swift.Error, Equatable {
             let message: String
         }
 

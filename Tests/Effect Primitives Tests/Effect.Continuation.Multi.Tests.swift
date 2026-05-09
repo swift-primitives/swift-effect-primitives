@@ -70,7 +70,7 @@ struct MultiContinuationTests {
 
     @Test
     func `resume with errors`() async {
-        struct TestError: Error, Equatable {
+        struct TestError: Swift.Error, Equatable {
             let code: Int
         }
 

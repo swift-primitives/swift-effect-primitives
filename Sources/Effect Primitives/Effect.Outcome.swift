@@ -41,7 +41,7 @@ extension Effect {
     /// `Equation.Protocol` and `Hash.Protocol`; the stdlib's
     /// `Swift.Equatable`/`Swift.Hashable` conformances are available
     /// whenever `Value` is `Copyable`.
-    public enum Outcome<Value: ~Copyable, Failure: Error>: ~Copyable {
+    public enum Outcome<Value: ~Copyable, Failure: Swift.Error>: ~Copyable {
         /// The effect was handled and computation resumed with a value.
         case resumed(Value)
 

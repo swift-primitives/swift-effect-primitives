@@ -47,7 +47,7 @@ extension Effect.Continuation {
     /// Revisit thunk form (`() throws(Failure) -> sending Value`) and
     /// `@Sendable` removal ([IMPL-092], research §4.1) when the crash is
     /// resolved upstream.
-    public struct One<Value: ~Copyable & Sendable, Failure: Error>: ~Copyable, Sendable {
+    public struct One<Value: ~Copyable & Sendable, Failure: Swift.Error>: ~Copyable, Sendable {
         @usableFromInline
         internal let _onValue: @Sendable (consuming sending Value) async -> Void
 

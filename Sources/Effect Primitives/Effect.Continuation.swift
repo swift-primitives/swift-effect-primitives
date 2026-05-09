@@ -37,7 +37,7 @@ public protocol __EffectContinuation<Value, Failure>: ~Copyable, Sendable {
     associatedtype Value: ~Copyable & Sendable
 
     /// The error type this continuation accepts.
-    associatedtype Failure: Error
+    associatedtype Failure: Swift.Error
 
     /// Resume the continuation with a successful value.
     ///
