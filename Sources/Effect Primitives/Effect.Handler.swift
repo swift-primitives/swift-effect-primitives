@@ -45,7 +45,7 @@
 ///
 /// - Note: This protocol is hoisted to module level due to Swift limitations.
 ///   Use `Effect.Handler.Protocol` to refer to this type.
-public protocol __EffectHandler: ~Copyable, Sendable {
+public protocol __EffectHandler: ~Copyable {
     /// The effect type this handler interprets.
     associatedtype Handled: ~Copyable & __EffectProtocol
 

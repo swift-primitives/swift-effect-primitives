@@ -42,12 +42,12 @@
 ///
 /// - Note: This protocol is hoisted to module level due to Swift limitations.
 ///   Use `Effect.Protocol` to refer to this type.
-public protocol __EffectProtocol: ~Copyable, Sendable {
+public protocol __EffectProtocol: ~Copyable {
     /// The arguments provided when performing this effect.
-    associatedtype Arguments: ~Copyable & Sendable = Void
+    associatedtype Arguments: ~Copyable = Void
 
     /// The success value type returned when the effect is handled.
-    associatedtype Value: ~Copyable & Sendable
+    associatedtype Value: ~Copyable
 
     /// The error type that handling may produce.
     associatedtype Failure: Swift.Error = Never

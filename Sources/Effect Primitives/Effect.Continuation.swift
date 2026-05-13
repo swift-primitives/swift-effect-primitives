@@ -32,9 +32,9 @@
 ///
 /// - Note: This protocol is hoisted to module level due to Swift limitations.
 ///   Use `Effect.Continuation.Protocol` to refer to this type.
-public protocol __EffectContinuation<Value, Failure>: ~Copyable, Sendable {
+public protocol __EffectContinuation<Value, Failure>: ~Copyable {
     /// The success value type this continuation accepts.
-    associatedtype Value: ~Copyable & Sendable
+    associatedtype Value: ~Copyable
 
     /// The error type this continuation accepts.
     associatedtype Failure: Swift.Error
