@@ -22,9 +22,9 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../swift-dependency-primitives"),
-        .package(path: "../swift-equation-primitives"),
-        .package(path: "../swift-hash-primitives"),
+        .package(url: "https://github.com/swift-primitives/swift-dependency-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-equation-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-hash-primitives.git", branch: "main"),
     ],
     targets: [
         .target(
