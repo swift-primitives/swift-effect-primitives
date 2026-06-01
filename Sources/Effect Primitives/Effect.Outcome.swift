@@ -111,6 +111,15 @@ where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {
     }
 }
 
+// Swift 6.4+: `Hash.Protocol` REFINES `Swift.Hashable`; a conditional conformance to it
+// does not synthesize the inherited `Swift.Hashable`, so declare it explicitly (the
+// `hash(into:)` witness above satisfies it). `Equatable` comes from the sibling
+// `Equation.Protocol` conformance. Ref: Research/se-0499-…md Addendum (2026-06-01).
+#if swift(>=6.4)
+extension Effect.Outcome: Swift.Hashable
+where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {}
+#endif
+
 // MARK: - Result Conversion
 
 extension Effect.Outcome where Value: Copyable {
