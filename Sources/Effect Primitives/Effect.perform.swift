@@ -76,7 +76,7 @@ extension Effect.Continuation {
     ///   - onValue: Invoked when the handler resumes with a value.
     ///   - onError: Invoked when the handler resumes with an error.
     /// - Returns: A one-shot continuation.
-    public static func one<Value: ~Copyable & Sendable, Failure: Swift.Error>(
+    public static func one<Value: ~Copyable, Failure: Swift.Error>(
         onValue: @escaping @Sendable (consuming sending Value) async -> Void,
         onError: @escaping @Sendable (Failure) async -> Void
     ) -> One<Value, Failure> {

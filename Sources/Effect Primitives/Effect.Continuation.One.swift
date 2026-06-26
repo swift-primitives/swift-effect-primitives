@@ -29,7 +29,11 @@ extension Effect.Continuation {
     /// ## Noncopyable Value
     ///
     /// `Value` admits `~Copyable` types so handlers can resume with linear
-    /// resources. The value and error paths are stored as two independent
+    /// resources. `Value` carries no `Sendable` bound: cross-isolation
+    /// transport rides the `consuming sending Value` callback parameters
+    /// (region-based isolation), so a non-Sendable `Value` resumes safely
+    /// without constraining every consumer — per [MEM-SEND-012]. The value
+    /// and error paths are stored as two independent
     /// callbacks (`onValue`, `onError`) rather than a single closure over
     /// stdlib `Result` — `Result<Value, Failure>` requires `Value: Copyable`,
     /// and encoding the delivery as a `throws(E) -> sending Value` thunk
@@ -47,7 +51,7 @@ extension Effect.Continuation {
     /// Revisit thunk form (`() throws(Failure) -> sending Value`) and
     /// `@Sendable` removal ([IMPL-092], research §4.1) when the crash is
     /// resolved upstream.
-    public struct One<Value: ~Copyable & Sendable, Failure: Swift.Error>: ~Copyable, Sendable {
+    public struct One<Value: ~Copyable, Failure: Swift.Error>: ~Copyable, Sendable {
         @usableFromInline
         internal let _onValue: @Sendable (consuming sending Value) async -> Void
 
