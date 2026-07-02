@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "Effect types for Swift."
+description: "Algebraic-effect declarations with compile-time-checked one-shot resumable continuations and scoped handler registration for Swift."
 topics:
   - primitives
   - effect
