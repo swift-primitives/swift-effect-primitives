@@ -64,13 +64,14 @@ extension Effect.Outcome: Sendable where Value: Sendable & ~Copyable, Failure: S
 // per SE-0499, so the conformances below would collide with the
 // explicit ones further down. Guard them to Swift <6.4 only.
 #if swift(<6.4)
-extension Effect.Outcome: Equatable where Value: Equatable, Failure: Equatable {}
-extension Effect.Outcome: Hashable where Value: Hashable, Failure: Hashable {}
+    extension Effect.Outcome: Equatable where Value: Equatable, Failure: Equatable {}
+    extension Effect.Outcome: Hashable where Value: Hashable, Failure: Hashable {}
 #endif
 
 // ~Copyable-compatible equality and hashing via the ecosystem primitives.
 extension Effect.Outcome: Equation.`Protocol`
 where Value: Equation.`Protocol` & ~Copyable, Failure: Equation.`Protocol` {
+    /// Compares two outcomes for equality via their payloads' `Equation.Protocol` conformance.
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         switch lhs {
         case .resumed(let lv):
@@ -79,12 +80,14 @@ where Value: Equation.`Protocol` & ~Copyable, Failure: Equation.`Protocol` {
             case .threw: return false
             case .aborted: return false
             }
+
         case .threw(let le):
             switch rhs {
             case .resumed: return false
             case .threw(let re): return le == re
             case .aborted: return false
             }
+
         case .aborted:
             switch rhs {
             case .resumed: return false
@@ -97,14 +100,17 @@ where Value: Equation.`Protocol` & ~Copyable, Failure: Equation.`Protocol` {
 
 extension Effect.Outcome: Hash.`Protocol`
 where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {
+    /// Feeds this outcome's discriminant and payload into `hasher`.
     public borrowing func hash(into hasher: inout Hasher) {
         switch self {
         case .resumed(let value):
             hasher.combine(0)
             value.hash(into: &hasher)
+
         case .threw(let error):
             hasher.combine(1)
             error.hash(into: &hasher)
+
         case .aborted:
             hasher.combine(2)
         }
@@ -116,8 +122,8 @@ where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {
 // `hash(into:)` witness above satisfies it). `Equatable` comes from the sibling
 // `Equation.Protocol` conformance. Ref: Research/se-0499-…md Addendum (2026-06-01).
 #if swift(>=6.4)
-extension Effect.Outcome: Swift.Hashable
-where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {}
+    extension Effect.Outcome: Swift.Hashable
+    where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {}
 #endif
 
 // MARK: - Result Conversion
@@ -130,6 +136,7 @@ extension Effect.Outcome where Value: Copyable {
         switch result {
         case .success(let value):
             self = .resumed(value)
+
         case .failure(let error):
             self = .threw(error)
         }
@@ -142,8 +149,10 @@ extension Effect.Outcome where Value: Copyable {
         switch self {
         case .resumed(let value):
             return .success(value)
+
         case .threw(let error):
             return .failure(error)
+
         case .aborted:
             return nil
         }
