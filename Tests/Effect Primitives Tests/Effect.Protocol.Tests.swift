@@ -5,22 +5,30 @@ import Testing
 // MARK: - Test Effects
 
 private struct SimpleEffect: Effect.`Protocol` {
+}
+
+extension SimpleEffect {
     typealias Value = String
     typealias Failure = Never
 }
 
 private struct EffectWithArguments: Effect.`Protocol` {
+    let x: Int
+    let y: Int
+}
+
+extension EffectWithArguments {
     typealias Arguments = (x: Int, y: Int)
     typealias Value = Int
     typealias Failure = Never
-
-    let x: Int
-    let y: Int
 
     var arguments: (x: Int, y: Int) { (x, y) }
 }
 
 private struct FallibleEffect: Effect.`Protocol` {
+}
+
+extension FallibleEffect {
     typealias Value = String
 
     struct Failure: Swift.Error, Equatable {

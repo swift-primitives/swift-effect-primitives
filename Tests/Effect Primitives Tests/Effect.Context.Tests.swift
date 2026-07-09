@@ -6,21 +6,30 @@ import Testing
 // MARK: - Test Fixtures
 
 private struct CounterKey: Effect.Context.Key {
+}
+
+extension CounterKey {
     typealias Value = Int
     static var liveValue: Int { 0 }
     static var testValue: Int { 999 }
 }
 
 private struct StringKey: Effect.Context.Key {
+}
+
+extension StringKey {
     typealias Value = String
     static var liveValue: String { "live" }
     static var testValue: String { "test" }
 }
 
 private struct NoTestValueKey: Effect.Context.Key {
+    // testValue defaults to liveValue
+}
+
+extension NoTestValueKey {
     typealias Value = String
     static var liveValue: String { "default-live" }
-    // testValue defaults to liveValue
 }
 
 // MARK: - Tests
