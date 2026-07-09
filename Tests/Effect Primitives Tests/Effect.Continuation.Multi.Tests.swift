@@ -2,8 +2,8 @@ import Testing
 
 @testable import Effect_Primitives
 
-@Suite("Effect.Continuation.Multi")
-struct MultiContinuationTests {
+@Suite
+struct `Effect.Continuation.Multi Tests` {
 
     @Test
     func `can be resumed multiple times`() async {

@@ -38,8 +38,8 @@ extension FallibleEffect {
 
 // MARK: - Tests
 
-@Suite("Effect.Protocol")
-struct EffectProtocolTests {
+@Suite
+struct `Effect.Protocol Tests` {
 
     @Test
     func `simple effect with void arguments`() {

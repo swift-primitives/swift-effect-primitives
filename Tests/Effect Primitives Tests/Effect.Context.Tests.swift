@@ -34,8 +34,9 @@ extension NoTestValueKey {
 
 // MARK: - Tests
 
-@Suite("Effect.Context")
-struct ContextTests {
+extension Effect.Context {
+    @Suite("Effect.Context")
+    struct Test {
 
     @Test
     func `default handler returns liveValue`() {
@@ -130,10 +131,12 @@ struct ContextTests {
         handlers[CounterKey.self] = 456
         #expect(handlers[CounterKey.self] == 456)
     }
+    }
 }
 
-@Suite("Effect.Context.Handlers")
-struct HandlersTests {
+extension Effect.Context.Handlers {
+    @Suite("Effect.Context.Handlers")
+    struct Test {
 
     @Test
     func `isTestContext returns testValue when true`() {
@@ -175,5 +178,6 @@ struct HandlersTests {
 
         // NoTestValueKey has no explicit testValue, so it should use liveValue
         #expect(handlers[NoTestValueKey.self] == "default-live")
+    }
     }
 }

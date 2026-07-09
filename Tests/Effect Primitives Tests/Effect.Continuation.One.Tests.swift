@@ -2,8 +2,8 @@ import Testing
 
 @testable import Effect_Primitives
 
-@Suite("Effect.Continuation.One")
-struct OneContinuationTests {
+@Suite
+struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with value completes successfully`() async {

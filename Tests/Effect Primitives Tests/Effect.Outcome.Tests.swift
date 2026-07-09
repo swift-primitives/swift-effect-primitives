@@ -2,8 +2,8 @@ import Testing
 
 @testable import Effect_Primitives
 
-@Suite("Effect.Outcome")
-struct OutcomeTests {
+@Suite
+struct `Effect.Outcome Tests` {
 
     // MARK: - Basic Cases
 
