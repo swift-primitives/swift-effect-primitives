@@ -44,7 +44,6 @@ struct `Effect.Protocol Tests` {
     @Suite struct `Edge Case` {}
     @Suite struct Integration {}
 
-
     @Test
     func `simple effect with void arguments`() {
         let effect = SimpleEffect()

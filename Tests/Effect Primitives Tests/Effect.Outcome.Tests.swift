@@ -8,7 +8,6 @@ struct `Effect.Outcome Tests` {
     @Suite struct `Edge Case` {}
     @Suite struct Integration {}
 
-
     // MARK: - Basic Cases
 
     @Test

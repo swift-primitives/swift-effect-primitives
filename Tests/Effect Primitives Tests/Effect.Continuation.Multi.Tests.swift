@@ -8,7 +8,6 @@ struct `Effect.Continuation.Multi Tests` {
     @Suite struct `Edge Case` {}
     @Suite struct Integration {}
 
-
     @Test
     func `can be resumed multiple times`() async {
         // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.

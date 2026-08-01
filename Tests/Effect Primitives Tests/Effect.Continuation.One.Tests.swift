@@ -8,7 +8,6 @@ struct `Effect.Continuation.One Tests` {
     @Suite struct `Edge Case` {}
     @Suite struct Integration {}
 
-
     @Test
     func `resume with value completes successfully`() async {
         // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
