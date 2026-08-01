@@ -40,6 +40,10 @@ extension FallibleEffect {
 
 @Suite
 struct `Effect.Protocol Tests` {
+    @Suite struct Unit {}
+    @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
+
 
     @Test
     func `simple effect with void arguments`() {

@@ -4,10 +4,16 @@ import Testing
 
 @Suite
 struct `Effect.Continuation.One Tests` {
+    @Suite struct Unit {}
+    @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
+
 
     @Test
     func `resume with value completes successfully`() async {
+        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var resumed = false
+        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var receivedValue: String?
 
         let continuation = Effect.Continuation.one { (result: Result<String, Never>) async in
@@ -25,6 +31,7 @@ struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with result success`() async {
+        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var receivedResult: Result<Int, Never>?
 
         let continuation = Effect.Continuation.one { (result: Result<Int, Never>) async in
@@ -38,6 +45,7 @@ struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with void convenience`() async {
+        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var resumed = false
 
         let continuation: Effect.Continuation.One<Void, Never> = Effect.Continuation.one { _ async in
@@ -51,20 +59,21 @@ struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with error`() async {
-        struct TestError: Swift.Error, Equatable {
+        struct Failure: Swift.Error, Equatable {
             let message: String
         }
 
-        nonisolated(unsafe) var receivedError: TestError?
+        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
+        nonisolated(unsafe) var receivedError: Failure?
 
-        let continuation = Effect.Continuation.one { (result: Result<String, TestError>) async in
+        let continuation = Effect.Continuation.one { (result: Result<String, Failure>) async in
             if case .failure(let error) = result {
                 receivedError = error
             }
         }
 
-        await continuation.resume(throwing: TestError(message: "failed"))
+        await continuation.resume(throwing: Failure(message: "failed"))
 
-        #expect(receivedError == TestError(message: "failed"))
+        #expect(receivedError == Failure(message: "failed"))
     }
 }

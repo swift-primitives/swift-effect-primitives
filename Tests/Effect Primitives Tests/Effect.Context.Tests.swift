@@ -106,16 +106,20 @@ extension Effect.Context {
 
         @Test
         func `throwing operation propagates error`() {
-            struct TestError: Swift.Error {}
+            struct Failure: Swift.Error {}
 
+            // swift-linter:disable:next do throws for typed catch
+            // REASON: `Effect.Context.with` overload resolution does not narrow the
+            // typed-throws `E` here (the same typed-throws inference limitation as
+            // `Dependency.Scope.with`), so `do throws(Failure)` fails to typecheck.
             do {
                 try Effect.Context.with { _ in
                 } operation: {
-                    throw TestError()
+                    throw Failure()
                 }
                 Issue.record("Expected error to be thrown")
             } catch {
-                #expect(error is TestError)
+                #expect(error is Failure)
             }
         }
 

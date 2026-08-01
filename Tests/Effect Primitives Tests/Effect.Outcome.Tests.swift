@@ -4,6 +4,10 @@ import Testing
 
 @Suite
 struct `Effect.Outcome Tests` {
+    @Suite struct Unit {}
+    @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
+
 
     // MARK: - Basic Cases
 
@@ -18,14 +22,14 @@ struct `Effect.Outcome Tests` {
 
     @Test
     func `threw case stores error`() {
-        struct TestError: Swift.Error, Equatable {
+        struct Failure: Swift.Error, Equatable {
             let code: Int
         }
 
-        let outcome: Effect.Outcome<String, TestError> = .threw(TestError(code: 42))
+        let outcome: Effect.Outcome<String, Failure> = .threw(Failure(code: 42))
 
         #expect(outcome.value == nil)
-        #expect(outcome.error == TestError(code: 42))
+        #expect(outcome.error == Failure(code: 42))
         #expect(!outcome.isAborted)
     }
 

@@ -42,36 +42,38 @@ extension Effect.Continuation {
         internal init(_ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void) {
             self._resume = resume
         }
+    }
+}
 
-        /// Resume the continuation with a successful value.
-        ///
-        /// This can be called multiple times to create multiple branches.
-        ///
-        /// - Parameter value: The value to resume with.
-        @inlinable
-        public func resume(returning value: sending Value) async {
-            await _resume(.success(value))
-        }
+extension Effect.Continuation.Multi {
+    /// Resume the continuation with a successful value.
+    ///
+    /// This can be called multiple times to create multiple branches.
+    ///
+    /// - Parameter value: The value to resume with.
+    @inlinable
+    public func resume(returning value: sending Value) async {
+        await _resume(.success(value))
+    }
 
-        /// Resume the continuation with an error.
-        ///
-        /// This can be called multiple times to create multiple branches.
-        ///
-        /// - Parameter error: The error to resume with.
-        @inlinable
-        public func resume(throwing error: Failure) async {
-            await _resume(.failure(error))
-        }
+    /// Resume the continuation with an error.
+    ///
+    /// This can be called multiple times to create multiple branches.
+    ///
+    /// - Parameter error: The error to resume with.
+    @inlinable
+    public func resume(throwing error: Failure) async {
+        await _resume(.failure(error))
+    }
 
-        /// Resume the continuation with a result.
-        ///
-        /// This can be called multiple times to create multiple branches.
-        ///
-        /// - Parameter result: The result to resume with.
-        @inlinable
-        public func resume(with result: sending Result<Value, Failure>) async {
-            await _resume(result)
-        }
+    /// Resume the continuation with a result.
+    ///
+    /// This can be called multiple times to create multiple branches.
+    ///
+    /// - Parameter result: The result to resume with.
+    @inlinable
+    public func resume(with result: sending Result<Value, Failure>) async {
+        await _resume(result)
     }
 }
 

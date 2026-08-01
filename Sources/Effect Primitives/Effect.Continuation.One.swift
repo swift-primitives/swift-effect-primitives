@@ -74,26 +74,28 @@ extension Effect.Continuation {
             self._onValue = onValue
             self._onError = onError
         }
+    }
+}
 
-        /// Resume the continuation with a successful value.
-        ///
-        /// This consumes the continuation, ensuring it cannot be used again.
-        ///
-        /// - Parameter value: The value to resume with.
-        @inlinable
-        public consuming func resume(returning value: consuming sending Value) async {
-            await _onValue(value)
-        }
+extension Effect.Continuation.One where Value: ~Copyable {
+    /// Resume the continuation with a successful value.
+    ///
+    /// This consumes the continuation, ensuring it cannot be used again.
+    ///
+    /// - Parameter value: The value to resume with.
+    @inlinable
+    public consuming func resume(returning value: consuming sending Value) async {
+        await _onValue(value)
+    }
 
-        /// Resume the continuation with an error.
-        ///
-        /// This consumes the continuation, ensuring it cannot be used again.
-        ///
-        /// - Parameter error: The error to resume with.
-        @inlinable
-        public consuming func resume(throwing error: Failure) async {
-            await _onError(error)
-        }
+    /// Resume the continuation with an error.
+    ///
+    /// This consumes the continuation, ensuring it cannot be used again.
+    ///
+    /// - Parameter error: The error to resume with.
+    @inlinable
+    public consuming func resume(throwing error: Failure) async {
+        await _onError(error)
     }
 }
 
@@ -153,7 +155,7 @@ extension Effect.Continuation.One where Value: Copyable {
     }
 }
 
-extension Effect.Continuation.One where Value == Void {
+extension Effect.Continuation.One where Value == Void, Value: ~Copyable {
     /// Resume the continuation with void.
     ///
     /// Convenience method for effects that return `Void`.
@@ -176,7 +178,7 @@ extension Effect.Continuation.One where Value: Copyable, Failure == Never {
     }
 }
 
-extension Effect.Continuation.One where Value == Void, Failure == Never {
+extension Effect.Continuation.One where Value == Void, Value: ~Copyable, Failure == Never {
     /// Resume the continuation with void.
     ///
     /// Convenience method for infallible effects that return `Void`.
