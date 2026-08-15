@@ -65,7 +65,8 @@ struct `Effect.Continuation.Multi Tests` {
         // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var count = 0
 
-        let continuation: Effect.Continuation.Multi<Void, Never> = Effect.Continuation.multi { _ async in
+        let continuation: Effect.Continuation.Multi<Void, Never> = Effect.Continuation.multi {
+            _ async in
             count += 1
         }
 
