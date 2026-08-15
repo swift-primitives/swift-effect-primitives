@@ -39,7 +39,8 @@ extension Effect.Continuation {
         ///
         /// - Parameter resume: The closure to invoke when resuming.
         @usableFromInline
-        internal init(_ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void) {
+        internal init(_ resume: @escaping @Sendable (sending Result<Value, Failure>) async -> Void)
+        {
             self._resume = resume
         }
     }

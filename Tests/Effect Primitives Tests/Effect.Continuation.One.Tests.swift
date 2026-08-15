@@ -47,7 +47,8 @@ struct `Effect.Continuation.One Tests` {
         // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var resumed = false
 
-        let continuation: Effect.Continuation.One<Void, Never> = Effect.Continuation.one { _ async in
+        let continuation: Effect.Continuation.One<Void, Never> = Effect.Continuation.one {
+            _ async in
             resumed = true
         }
 
