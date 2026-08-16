@@ -1,3 +1,4 @@
+import Hash_Primitives
 import Testing
 
 @testable import Effect_Primitives
@@ -144,12 +145,14 @@ struct `Effect.Outcome Tests` {
 
     @Test
     func `hashable consistency`() {
-        let a: Effect.Outcome<Int, Never> = .resumed(42)
-        let b: Effect.Outcome<Int, Never> = .resumed(42)
+        struct E: Swift.Error, Hash.`Protocol` {}
+
+        let a: Effect.Outcome<Int, E> = .resumed(42)
+        let b: Effect.Outcome<Int, E> = .resumed(42)
 
         #expect(a.hashValue == b.hashValue)
 
-        var set: Set<Effect.Outcome<Int, Never>> = []
+        var set: Set<Effect.Outcome<Int, E>> = []
         set.insert(a)
         #expect(set.contains(b))
     }
