@@ -16,16 +16,16 @@ struct `Effect.Continuation.One Tests` {
         nonisolated(unsafe) var receivedValue: String?
 
         let continuation = Effect.Continuation.one { (result: Result<String, Never>) async in
-            resumed = true
+            unsafe resumed = true
             if case .success(let value) = result {
-                receivedValue = value
+                unsafe receivedValue = value
             }
         }
 
         await continuation.resume(returning: "hello")
 
-        #expect(resumed)
-        #expect(receivedValue == "hello")
+        #expect(unsafe resumed)
+        #expect(unsafe receivedValue == "hello")
     }
 
     @Test
@@ -34,12 +34,12 @@ struct `Effect.Continuation.One Tests` {
         nonisolated(unsafe) var receivedResult: Result<Int, Never>?
 
         let continuation = Effect.Continuation.one { (result: Result<Int, Never>) async in
-            receivedResult = result
+            unsafe receivedResult = result
         }
 
         await continuation.resume(with: .success(42))
 
-        #expect(receivedResult == .success(42))
+        #expect(unsafe receivedResult == .success(42))
     }
 
     @Test
@@ -49,12 +49,12 @@ struct `Effect.Continuation.One Tests` {
 
         let continuation: Effect.Continuation.One<Void, Never> = Effect.Continuation.one {
             _ async in
-            resumed = true
+            unsafe resumed = true
         }
 
         await continuation.resume()
 
-        #expect(resumed)
+        #expect(unsafe resumed)
     }
 
     @Test
@@ -68,12 +68,12 @@ struct `Effect.Continuation.One Tests` {
 
         let continuation = Effect.Continuation.one { (result: Result<String, Failure>) async in
             if case .failure(let error) = result {
-                receivedError = error
+                unsafe receivedError = error
             }
         }
 
         await continuation.resume(throwing: Failure(message: "failed"))
 
-        #expect(receivedError == Failure(message: "failed"))
+        #expect(unsafe receivedError == Failure(message: "failed"))
     }
 }

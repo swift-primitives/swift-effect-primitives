@@ -178,7 +178,7 @@ extension Effect.Context.Handlers {
 
         @Test
         func `testValue defaults to liveValue when not overridden`() {
-            var handlers = Effect.Context.Handlers.forTesting()
+            let handlers = Effect.Context.Handlers.forTesting()
 
             // NoTestValueKey has no explicit testValue, so it should use liveValue
             #expect(handlers[NoTestValueKey.self] == "default-live")

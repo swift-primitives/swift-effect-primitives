@@ -15,7 +15,7 @@ struct `Effect.Continuation.Multi Tests` {
 
         let continuation = Effect.Continuation.multi { (result: Result<Int, Never>) async in
             if case .success(let value) = result {
-                values.append(value)
+                unsafe values.append(value)
             }
         }
 
@@ -23,7 +23,7 @@ struct `Effect.Continuation.Multi Tests` {
         await continuation.resume(returning: 2)
         await continuation.resume(returning: 3)
 
-        #expect(values == [1, 2, 3])
+        #expect(unsafe values == [1, 2, 3])
     }
 
     @Test
@@ -32,7 +32,7 @@ struct `Effect.Continuation.Multi Tests` {
         nonisolated(unsafe) var count = 0
 
         let original = Effect.Continuation.multi { (_: Result<Void, Never>) async in
-            count += 1
+            unsafe count += 1
         }
 
         let copy1 = original
@@ -42,7 +42,7 @@ struct `Effect.Continuation.Multi Tests` {
         await copy1.resume()
         await copy2.resume()
 
-        #expect(count == 3)
+        #expect(unsafe count == 3)
     }
 
     @Test
@@ -51,13 +51,13 @@ struct `Effect.Continuation.Multi Tests` {
         nonisolated(unsafe) var results: [Result<String, Never>] = []
 
         let continuation = Effect.Continuation.multi { (result: Result<String, Never>) async in
-            results.append(result)
+            unsafe results.append(result)
         }
 
         await continuation.resume(with: .success("a"))
         await continuation.resume(with: .success("b"))
 
-        #expect(results.count == 2)
+        #expect(unsafe results.count == 2)
     }
 
     @Test
@@ -67,13 +67,13 @@ struct `Effect.Continuation.Multi Tests` {
 
         let continuation: Effect.Continuation.Multi<Void, Never> = Effect.Continuation.multi {
             _ async in
-            count += 1
+            unsafe count += 1
         }
 
         await continuation.resume()
         await continuation.resume()
 
-        #expect(count == 2)
+        #expect(unsafe count == 2)
     }
 
     @Test
@@ -87,13 +87,13 @@ struct `Effect.Continuation.Multi Tests` {
 
         let continuation = Effect.Continuation.multi { (result: Result<Void, Failure>) async in
             if case .failure(let error) = result {
-                errors.append(error)
+                unsafe errors.append(error)
             }
         }
 
         await continuation.resume(throwing: Failure(code: 1))
         await continuation.resume(throwing: Failure(code: 2))
 
-        #expect(errors == [Failure(code: 1), Failure(code: 2)])
+        #expect(unsafe errors == [Failure(code: 1), Failure(code: 2)])
     }
 }

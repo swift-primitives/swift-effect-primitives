@@ -58,16 +58,6 @@ extension Effect {
 extension Effect.Outcome: Copyable where Value: Copyable {}
 extension Effect.Outcome: Sendable where Value: Sendable & ~Copyable, Failure: Sendable {}
 
-// Copyable Value: stdlib Equatable/Hashable (backward compatible).
-// Under Swift 6.4+, `Equation.\`Protocol\`` is a typealias to
-// `Swift.Equatable` (and `Hash.\`Protocol\`` to `Swift.Hashable`)
-// per SE-0499, so the conformances below would collide with the
-// explicit ones further down. Guard them to Swift <6.4 only.
-#if swift(<6.4)
-    extension Effect.Outcome: Equatable where Value: Equatable, Failure: Equatable {}
-    extension Effect.Outcome: Hashable where Value: Hashable, Failure: Hashable {}
-#endif
-
 // ~Copyable-compatible equality and hashing via the ecosystem primitives.
 extension Effect.Outcome: Equation.`Protocol`
 where Value: Equation.`Protocol` & ~Copyable, Failure: Equation.`Protocol` {
@@ -117,14 +107,8 @@ where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {
     }
 }
 
-// Swift 6.4+: `Hash.Protocol` REFINES `Swift.Hashable`; a conditional conformance to it
-// does not synthesize the inherited `Swift.Hashable`, so declare it explicitly (the
-// `hash(into:)` witness above satisfies it). `Equatable` comes from the sibling
-// `Equation.Protocol` conformance. Ref: Research/se-0499-…md Addendum (2026-06-01).
-#if swift(>=6.4)
-    extension Effect.Outcome: Swift.Hashable
-    where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {}
-#endif
+extension Effect.Outcome: Swift.Hashable
+where Value: Hash.`Protocol` & ~Copyable, Failure: Hash.`Protocol` {}
 
 // MARK: - Result Conversion
 
