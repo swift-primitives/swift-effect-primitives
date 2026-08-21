@@ -10,9 +10,9 @@ struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with value completes successfully`() async {
-        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
+
         nonisolated(unsafe) var resumed = false
-        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
+
         nonisolated(unsafe) var receivedValue: String?
 
         let continuation = Effect.Continuation.one { (result: Result<String, Never>) async in
@@ -30,7 +30,7 @@ struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with result success`() async {
-        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
+
         nonisolated(unsafe) var receivedResult: Result<Int, Never>?
 
         let continuation = Effect.Continuation.one { (result: Result<Int, Never>) async in
@@ -44,7 +44,7 @@ struct `Effect.Continuation.One Tests` {
 
     @Test
     func `resume with void convenience`() async {
-        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
+
         nonisolated(unsafe) var resumed = false
 
         let continuation: Effect.Continuation.One<Void, Never> = Effect.Continuation.one {
@@ -63,7 +63,6 @@ struct `Effect.Continuation.One Tests` {
             let message: String
         }
 
-        // SAFETY: test-local state captured by closures invoked and awaited sequentially within this single test body.
         nonisolated(unsafe) var receivedError: Failure?
 
         let continuation = Effect.Continuation.one { (result: Result<String, Failure>) async in

@@ -2,8 +2,6 @@ import Testing
 
 @testable import Effect_Primitives
 
-// MARK: - Test Effects
-
 private struct SimpleEffect: Effect.`Protocol` {
 }
 
@@ -36,8 +34,6 @@ extension FallibleEffect {
     }
 }
 
-// MARK: - Tests
-
 @Suite
 struct `Effect.Protocol Tests` {
     @Suite struct Unit {}
@@ -48,9 +44,8 @@ struct `Effect.Protocol Tests` {
     func `simple effect with void arguments`() {
         let effect = SimpleEffect()
 
-        // arguments should be () for Void
         let args: Void = effect.arguments
-        _ = args  // suppress unused warning
+        _ = args
     }
 
     @Test
@@ -63,8 +58,7 @@ struct `Effect.Protocol Tests` {
 
     @Test
     func `effect with typed failure`() {
-        // This test verifies the type system works correctly
-        // FallibleEffect has a custom Failure type
+
         let _: FallibleEffect.Failure.Type = FallibleEffect.Failure.self
         let error = FallibleEffect.Failure(reason: "test")
         #expect(error.reason == "test")
@@ -72,7 +66,7 @@ struct `Effect.Protocol Tests` {
 
     @Test
     func `effect is Sendable`() {
-        // Compile-time check - effects must be Sendable
+
         func requiresSendable<T: Sendable>(_: T.Type) {}
         requiresSendable(SimpleEffect.self)
         requiresSendable(EffectWithArguments.self)

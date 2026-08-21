@@ -3,8 +3,6 @@ import Testing
 
 @testable import Effect_Primitives
 
-// MARK: - Test Fixtures
-
 private struct CounterKey: Effect.Context.Key {
 }
 
@@ -24,15 +22,13 @@ extension StringKey {
 }
 
 private struct NoTestValueKey: Effect.Context.Key {
-    // testValue defaults to liveValue
+
 }
 
 extension NoTestValueKey {
     typealias Value = String
     static var liveValue: String { "default-live" }
 }
-
-// MARK: - Tests
 
 extension Effect.Context {
     @Suite("Effect.Context")
@@ -108,10 +104,6 @@ extension Effect.Context {
         func `throwing operation propagates error`() {
             struct Failure: Swift.Error {}
 
-            // swift-linter:disable:next do throws for typed catch
-            // REASON: `Effect.Context.with` overload resolution does not narrow the
-            // typed-throws `E` here (the same typed-throws inference limitation as
-            // `Dependency.Scope.with`), so `do throws(Failure)` fails to typecheck.
             do {
                 try Effect.Context.with { _ in
                 } operation: {
@@ -127,7 +119,7 @@ extension Effect.Context {
         func `handlers storage subscript get/set`() {
             var handlers = Effect.Context.Handlers()
 
-            #expect(handlers[CounterKey.self] == 0)  // liveValue
+            #expect(handlers[CounterKey.self] == 0)
 
             handlers[CounterKey.self] = 123
             #expect(handlers[CounterKey.self] == 123)
@@ -147,8 +139,8 @@ extension Effect.Context.Handlers {
             var handlers = Effect.Context.Handlers()
             handlers.isTestContext = true
 
-            #expect(handlers[CounterKey.self] == 999)  // testValue
-            #expect(handlers[StringKey.self] == "test")  // testValue
+            #expect(handlers[CounterKey.self] == 999)
+            #expect(handlers[StringKey.self] == "test")
         }
 
         @Test
@@ -156,8 +148,8 @@ extension Effect.Context.Handlers {
             var handlers = Effect.Context.Handlers()
             handlers.isTestContext = false
 
-            #expect(handlers[CounterKey.self] == 0)  // liveValue
-            #expect(handlers[StringKey.self] == "live")  // liveValue
+            #expect(handlers[CounterKey.self] == 0)
+            #expect(handlers[StringKey.self] == "live")
         }
 
         @Test
@@ -173,14 +165,13 @@ extension Effect.Context.Handlers {
             var handlers = Effect.Context.Handlers.forTesting()
             handlers[CounterKey.self] = 42
 
-            #expect(handlers[CounterKey.self] == 42)  // explicit, not testValue
+            #expect(handlers[CounterKey.self] == 42)
         }
 
         @Test
         func `testValue defaults to liveValue when not overridden`() {
             let handlers = Effect.Context.Handlers.forTesting()
 
-            // NoTestValueKey has no explicit testValue, so it should use liveValue
             #expect(handlers[NoTestValueKey.self] == "default-live")
         }
     }

@@ -9,8 +9,6 @@ struct `Effect.Outcome Tests` {
     @Suite struct `Edge Case` {}
     @Suite struct Integration {}
 
-    // MARK: - Basic Cases
-
     @Test
     func `resumed case stores value`() {
         let outcome: Effect.Outcome<String, Never> = .resumed("hello")
@@ -41,8 +39,6 @@ struct `Effect.Outcome Tests` {
         #expect(outcome.error == nil)
         #expect(outcome.isAborted)
     }
-
-    // MARK: - Result Conversion
 
     @Test
     func `init from Result success`() {
@@ -94,8 +90,6 @@ struct `Effect.Outcome Tests` {
         #expect(outcome.result == nil)
     }
 
-    // MARK: - Equatable
-
     @Test
     func `equatable for resumed`() {
         let a: Effect.Outcome<Int, Never> = .resumed(1)
@@ -140,8 +134,6 @@ struct `Effect.Outcome Tests` {
         #expect(resumed != aborted)
         #expect(threw != aborted)
     }
-
-    // MARK: - Hashable
 
     @Test
     func `hashable consistency`() {
